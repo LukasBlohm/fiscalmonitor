@@ -1,11 +1,11 @@
 #' Get_fso_pop_data
 #'
-#' @param fso_url
-#' @param file
+#' @param fso_url String, denoting the path to the px sheets
+#' @param file String, denoting the name of the px sheet
 #' @param df_cantons Data frame, storing canton data (name, abbreviation, etc.)
 #' @param save Logical, should the data be saved (under data_prepared/)?
 #'
-#' @return
+#' @return Data frame
 #'
 #' @examples
 #' \dontrun{df_population <- get_fso_pop_data(fso_url, file, df_cantons, save = TRUE)}

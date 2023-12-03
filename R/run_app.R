@@ -15,14 +15,13 @@ run_app <- function(
   ...
 ) {
 
-
   source("R/app_global.R")
 
-  .GlobalEnv$df_base <- read_csv(paste0(PATHS$data_prepared, "ffa_data.csv")) %>%
-    pivot_longer(
-      -c(canton, year),
-      names_to = c("level", "cat1", "cat2", "unit"), names_sep = "_") %>%
-    mutate(year = as.integer(year))
+  if (file.exists(paste0(PATHS$data_prepared, "ffa_data.csv"))) {
+    .GlobalEnv$df_base <- read_csv(paste0(PATHS$data_prepared, "ffa_data.csv"))
+  } else {
+    .GlobalEnv$df_base <- prepare_full_ffa_data(df_cantons, save = TRUE)
+  }
 
   .GlobalEnv$df_var_structure <- df_base %>%
     select(level, cat1, cat2, unit) %>%

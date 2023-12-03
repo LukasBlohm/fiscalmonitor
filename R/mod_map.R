@@ -95,7 +95,7 @@ mod_map_server <- function(id){
 
       PlotKant(id = names(v_data),
                col = FindColor(v_data, cols = v_colors),
-               main = "Cantons")
+               main = NULL)
 
       ColorLegend(
         x = "left", # horiz = FALSE,
