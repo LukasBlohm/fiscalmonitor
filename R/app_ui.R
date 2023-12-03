@@ -17,6 +17,11 @@ app_ui <- function(request) {
           title = "TS",
           mod_ts_ui(id = "timeseries")$sidebar,
           mod_ts_ui(id = "timeseries")$main
+        ),
+        tabPanel(
+          title = "Map",
+          mod_map_ui(id = "map")$sidebar,
+          mod_map_ui(id = "map")$main
         )
       )
     )
