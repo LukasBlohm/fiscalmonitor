@@ -15,7 +15,19 @@ run_app <- function(
   ...
 ) {
 
+
   source("R/app_global.R")
+
+  .GlobalEnv$df_base <- read_csv(paste0(PATHS$data_prepared, "ffa_data.csv")) %>%
+    pivot_longer(
+      -c(canton, year),
+      names_to = c("level", "cat1", "cat2", "unit"), names_sep = "_") %>%
+    mutate(year = as.integer(year))
+
+  .GlobalEnv$df_var_structure <- df_base %>%
+    select(level, cat1, cat2, unit) %>%
+    unique()
+
 
   with_golem_options(
     app = shinyApp(

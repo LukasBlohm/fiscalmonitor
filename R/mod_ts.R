@@ -24,11 +24,11 @@ mod_ts_ui <- function(id){
                   selected = "can"),
       selectInput(ns("cat1"),
                   "Category 1",
-                  choices = c("rev", "exp", "debt"),
+                  choices = unique(.GlobalEnv$df_base$cat1),
                   selected = "rev"),
       selectInput(ns("cat2"),
                   "Category 2",
-                  choices = c("total", "int", "net", "gross", "agg", "pc"),
+                  choices = unique(.GlobalEnv$df_base$cat2),
                   selected = "total"),
       selectInput(ns("unit"),
                   "Unit",
@@ -46,15 +46,29 @@ mod_ts_ui <- function(id){
 #'
 #' @noRd
 mod_ts_server <- function(id){
-  moduleServer( id, function(input, output, session){
+  moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    df <- read_csv(paste0(PATHS$data_prepared, "ffa_data.csv")) %>%
-      pivot_longer(
-        -c(canton, year),
-        names_to = c("level", "cat1", "cat2", "unit"), names_sep = "_")
 
-    df_plot <- reactive(filter_df(df, input))
+    observe({
+      updateSelectInput(session, inputId = "cat2",
+                        choices = df_var_structure %>%
+                          filter(level == input$level) %>%
+                          filter(cat1 == input$cat1) %>%
+                          filter(unit == input$unit) %>%
+                          pull(cat2))
+    })
+
+    observe({
+      updateSelectInput(session, inputId = "unit",
+                        choices = df_var_structure %>%
+                          filter(level == input$level) %>%
+                          filter(cat1 == input$cat1) %>%
+                          filter(cat2 == input$cat2) %>%
+                          pull(unit))
+    })
+
+    df_plot <- reactive(filter_df(.GlobalEnv$df_base, input))
 
 
     output$plot <- renderPlot({
