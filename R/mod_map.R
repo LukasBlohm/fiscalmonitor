@@ -9,9 +9,10 @@
 #' @importFrom shiny NS tagList
 mod_map_ui <- function(id){
   ns <- NS(id)
-  list(
 
-    sidebar = sidebarPanel(
+  bslib::page_sidebar(
+
+    sidebar = bslib::sidebar(
 
       sliderInput(ns("year"),
                   "Year",
@@ -39,10 +40,17 @@ mod_map_ui <- function(id){
                   choices = c("mio", "CHF"),
                   selected = "mio")
     ),
-    main = mainPanel(
+    bslib::card(
+      full_screen = TRUE,
+      card_header("Map"),
       plotOutput(ns("plot_map"))
     )
   )
+  # ,
+  #   main = mainPanel(
+  #     plotOutput(ns("plot_map"))
+  #
+  # )
 
 }
 
@@ -76,8 +84,10 @@ mod_map_server <- function(id){
 
     output$plot_map <- renderPlot({
 
-      v_data <- df_plot()$value %>% set_names(df_plot()$canton)
+      # print(head(df_plot()))
 
+      v_data <- df_plot()$value %>% set_names(df_plot()$canton)
+      # print(v_data)
       # print(min(v_data))
       # print(max(v_data))
 
@@ -93,11 +103,11 @@ mod_map_server <- function(id){
       # and a color ramp from white to hred
       v_colors <- colorRampPalette(c("white", hred))(100)
 
-      PlotKant(id = names(v_data),
-               col = FindColor(v_data, cols = v_colors),
+      bfsMaps::PlotKant(id = names(v_data),
+               col = DescTools::FindColor(v_data, cols = v_colors),
                main = NULL)
 
-      ColorLegend(
+      DescTools::ColorLegend(
         x = "left", # horiz = FALSE,
         inset = -0.01, cols = v_colors,
         labels=formatC((seq(min_indicator, max_indicator,
@@ -107,14 +117,12 @@ mod_map_server <- function(id){
       )
 
       # Capture the plot
-      captured_plot <- recordPlot()
+      captured_plot <- grDevices::recordPlot()
 
       # Close the graphics device
       dev.off()
 
-      # Later, you can replay this plot
       captured_plot
-
     })
   })
 }

@@ -9,9 +9,10 @@
 #' @importFrom shiny NS tagList
 mod_ts_ui <- function(id){
   ns <- NS(id)
-  list(
 
-    sidebar = sidebarPanel(
+  bslib::page_sidebar(
+
+    sidebar = bslib::sidebar(
       selectInput(ns("canton_selection"),
                   "Highlight Canton",
                   choices = unique(.GlobalEnv$df_cantons$canton),
@@ -35,7 +36,9 @@ mod_ts_ui <- function(id){
                   choices = c("mio", "CHF"),
                   selected = "mio")
       ),
-    main = mainPanel(
+    bslib::card(
+      full_screen = TRUE,
+      card_header("Time Series"),
       plotOutput(ns("plot"))
       )
     )
