@@ -8,4 +8,5 @@ app_server <- function(input, output, session) {
 
   mod_ts_server("timeseries")
   mod_map_server("map")
+  mod_reg_server("reg")
 }

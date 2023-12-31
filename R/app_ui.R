@@ -25,6 +25,11 @@ app_ui <- function(request) {
       bslib::nav_panel(
         title = "Map",
         mod_map_ui(id = "map")
+      ),
+
+      bslib::nav_panel(
+        title = "Regressions",
+        mod_reg_ui(id = "reg")
       )
     )
   )
