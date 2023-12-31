@@ -21,22 +21,10 @@ mod_map_ui <- function(id){
                   round = TRUE,
                   sep = ""),
 
-      shiny::selectInput(ns("level"),
-                  "Level",
-                  choices = c("can", "mun"),
-                  selected = "can"),
-      shiny::selectInput(ns("cat1"),
-                  "Category 1",
-                  choices = c("rev", "exp", "debt"),
-                  selected = "rev"),
-      shiny::selectInput(ns("cat2"),
-                  "Category 2",
-                  choices = c("total", "int", "net", "gross", "agg", "pc"),
-                  selected = "total"),
-      shiny::selectInput(ns("unit"),
-                  "Unit",
-                  choices = c("mio", "CHF"),
-                  selected = "mio")
+      # level_selector(ns),
+      cat1_selector(ns),
+      cat2_selector(ns),
+      unit_selector(ns)
     ),
     bslib::card(
       full_screen = TRUE,
@@ -54,23 +42,7 @@ mod_map_server <- function(id){
     ns <- session$ns
 
     shiny::observe({
-      shiny::updateSelectInput(
-        session, inputId = "cat2",
-        choices = df_var_structure %>%
-          dplyr::filter(federal_level == input$level) %>%
-          dplyr::filter(cat1 == input$cat1) %>%
-          dplyr::filter(unit == input$unit) %>%
-          dplyr::pull(cat2)
-        )
-    })
-
-    shiny::observe({
-      shiny::updateSelectInput(session, inputId = "unit",
-                               choices = df_var_structure %>%
-                                 dplyr::filter(federal_level == input$level) %>%
-                                 dplyr::filter(cat1 == input$cat1) %>%
-                                 dplyr::filter(cat2 == input$cat2) %>%
-                                 dplyr::pull(unit))
+      update_cat2(session, input)
     })
 
     df_plot <- shiny::reactive(filter_df_map(.GlobalEnv$df_base, input))

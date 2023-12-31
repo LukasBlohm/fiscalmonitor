@@ -48,7 +48,6 @@ create_plot <- function(df_plot, input) {
   v_colors_plot <- c("Other" = "grey")
 
   if (!is.null(input$canton_selection)) {
-    message("condition met")
     v_colors_plot <- c(.GlobalEnv$v_colors[1:length(input$canton_selection)] %>%
       purrr::set_names(input$canton_selection),
       v_colors_plot)

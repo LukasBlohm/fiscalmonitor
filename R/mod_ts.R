@@ -13,28 +13,11 @@ mod_ts_ui <- function(id){
   bslib::page_sidebar(
 
     sidebar = bslib::sidebar(
-      shiny::selectInput(ns("canton_selection"),
-                  "Highlight Canton",
-                  choices = unique(.GlobalEnv$df_cantons$canton),
-                  selected = NULL,
-                  multiple = TRUE),
-
-      shiny::selectInput(ns("level"),
-                  "Level",
-                  choices = c("can", "mun"),
-                  selected = "can"),
-      shiny::selectInput(ns("cat1"),
-                  "Category 1",
-                  choices = unique(.GlobalEnv$df_base$cat1),
-                  selected = "rev"),
-      shiny::selectInput(ns("cat2"),
-                  "Category 2",
-                  choices = unique(.GlobalEnv$df_base$cat2),
-                  selected = "total"),
-      shiny::selectInput(ns("unit"),
-                  "Unit",
-                  choices = unique(.GlobalEnv$df_base$unit),
-                  selected = "pc_chf")
+      canton_selector(ns),
+      # level_selector(ns),
+      cat1_selector(ns),
+      cat2_selector(ns),
+      unit_selector(ns)
       ),
     bslib::card(
       full_screen = TRUE,
@@ -53,22 +36,18 @@ mod_ts_server <- function(id){
     ns <- session$ns
 
     shiny::observe({
-      shiny::updateSelectInput(session, inputId = "cat2",
-                        choices = df_var_structure %>%
-                          dplyr::filter(federal_level == input$level) %>%
-                          dplyr::filter(cat1 == input$cat1) %>%
-                          dplyr::filter(unit == input$unit) %>%
-                          dplyr::pull(cat2))
-    })
+      update_cat2(session, input)
+      })
 
-    shiny::observe({
-      shiny::updateSelectInput(session, inputId = "unit",
-                        choices = df_var_structure %>%
-                          dplyr::filter(federal_level == input$level) %>%
-                          dplyr::filter(cat1 == input$cat1) %>%
-                          dplyr::filter(cat2 == input$cat2) %>%
-                          dplyr::pull(unit))
-    })
+    # shiny::observe({
+    #   update_unit(session, input)
+    #   # shiny::updateSelectInput(session, inputId = "unit",
+    #   #                   choices = df_var_structure %>%
+    #   #                     dplyr::filter(federal_level == input$level) %>%
+    #   #                     dplyr::filter(cat1 == input$cat1) %>%
+    #   #                     dplyr::filter(cat2 == input$cat2) %>%
+    #   #                     dplyr::pull(unit))
+    # })
 
     df_plot <- shiny::reactive(filter_df(.GlobalEnv$df_base, input))
 
