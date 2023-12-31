@@ -27,10 +27,23 @@ create_plot <- function(df_plot, input) {
 
   v_colors_plot <- c(v_colors_plot, "Other" = "grey")
 
-  plt <- ggplot() +
-    geom_line(df_plot,
-              mapping = aes(year, value, group = canton, color = canton_marked),
-              size = 1) +
+  plt <- ggplot(df_plot) +
+    # Points to carry hover text
+    suppressWarnings(
+      geom_point(
+        mapping = aes(
+          year, value, group = canton,
+          text = paste0(
+            canton, " (", year, ")",
+            "<br>", round(value, 1), " ", stringr::str_to_title(unit), ". CHF"
+          )),
+        alpha = 0 # hide points
+      )
+    ) +
+    geom_line(
+      mapping = aes(year, value, group = canton, color = canton_marked),
+      size = 1
+      ) +
     scale_color_manual("", values = v_colors_plot) +
     labs(x = NULL, y = NULL) +
     theme_classic() +

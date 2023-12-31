@@ -38,8 +38,8 @@ mod_ts_ui <- function(id){
       ),
     bslib::card(
       full_screen = TRUE,
-      card_header("Time Series"),
-      plotOutput(ns("plot"))
+      bslib::card_header("Time Series"),
+      plotly::plotlyOutput(ns("plot"))
       )
     )
 
@@ -74,10 +74,20 @@ mod_ts_server <- function(id){
     df_plot <- reactive(filter_df(.GlobalEnv$df_base, input))
 
 
-    output$plot <- renderPlot({
+    output$plot <- plotly::renderPlotly({
 
-      create_plot(df_plot(), input)
-
+      create_plot(df_plot(), input) %>%
+        plotly::ggplotly(
+          tooltip = "text"
+        ) %>%
+        plotly::config(modeBarButtonsToRemove = c(
+          # "zoomIn2d", "zoomOut2d", ""resetScale2d"
+          "zoom2d", "lasso2d", "pan2d", "box2d", "select2d", "autoScale2d",
+          "hoverClosestCartesian", "hoverCompareCartesian"
+        )) %>%
+        plotly::layout(
+          legend = list(orientation = "h", x = 0.5, xanchor = "center")
+        )
     })
   })
 }

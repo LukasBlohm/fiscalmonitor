@@ -11,9 +11,9 @@ app_ui <- function(request) {
   tagList(
 
     # golem_add_external_resources(),
-
     bslib::page_navbar(
-      theme = bslib::bs_theme(version = 5),
+
+      theme = bslib::bs_theme(version = 5, bootswatch = "lux"),
 
       title = "Fiscal Monitor",
 
@@ -26,21 +26,6 @@ app_ui <- function(request) {
         title = "Map",
         mod_map_ui(id = "map")
       )
-
-
-
-    #   tabsetPanel(
-    #     tabPanel(
-    #       title = "TS",
-    #       mod_ts_ui(id = "timeseries")$sidebar,
-    #       mod_ts_ui(id = "timeseries")$main
-    #     ),
-    #     tabPanel(
-    #       title = "Map",
-    #       mod_map_ui(id = "map")$sidebar,
-    #       mod_map_ui(id = "map")$main
-    #     )
-    #   )
     )
   )
 }
