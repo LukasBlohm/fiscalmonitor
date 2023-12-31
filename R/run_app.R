@@ -18,11 +18,11 @@ run_app <- function(
 
   source("R/app_global.R")
 
-  if (file.exists(.GlobalEnv$PATHS$ffa_prepared)) {
-    .GlobalEnv$df_base <- readr::read_rds(.GlobalEnv$PATHS$ffa_prepared)
+  if (file.exists(.GlobalEnv$PATHS$final_dataset)) {
+    .GlobalEnv$df_base <- readr::read_rds(.GlobalEnv$PATHS$final_dataset)
   } else {
-    .GlobalEnv$df_base <- prepare_full_ffa_data(
-      df_cantons, save_to = .GlobalEnv$PATHS$ffa_prepared
+    .GlobalEnv$df_base <- prepare_full_data(
+      df_cantons, save_to = .GlobalEnv$PATHS$final_dataset
       )
   }
 

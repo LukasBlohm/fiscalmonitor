@@ -1,11 +1,12 @@
 #' Prepare revenues and expenditures
 #'
 #' @param df_cantons Data frame, storing canton data (name, abbreviation, etc.)
+#' @param save_to String, storing the path where the output should be saved
 #'
 #' @importFrom magrittr %>%
 #'
 #' @return Data frame
-prepare_rev_exp <- function(df_cantons) {
+prepare_rev_exp <- function(df_cantons, save_to = NULL) {
 
   df_revenues <- purrr::map(
     df_cantons$canton, ~prepare_canton(canton_abb = .x, category = "rev")
@@ -59,6 +60,11 @@ prepare_rev_exp <- function(df_cantons) {
 
   message("Prepared df_rev_exp")
 
+  if (!is.null(save_to)){
+    readr::write_rds(df_rev_exp, save_to)
+    message("Saved df_rev_exp in ", save_to)
+  }
+
   return(df_rev_exp)
 }
 
@@ -68,11 +74,12 @@ prepare_rev_exp <- function(df_cantons) {
 #' prepare_balance
 #'
 #' @param df_cantons Data frame, storing canton data (name, abbreviation, etc.)
+#' @param save_to String, storing the path where the output should be saved
 #'
 #' @importFrom magrittr %>%
 #'
 #' @return Data frame
-prepare_balance <- function(df_cantons) {
+prepare_balance <- function(df_cantons, save_to = NULL) {
 
   df_balance <- purrr::map(
     df_cantons$canton,
@@ -107,93 +114,13 @@ prepare_balance <- function(df_cantons) {
 
   message("Prepared df_balance")
 
+  if (!is.null(save_to)){
+    readr::write_rds(df_balance, save_to)
+    message("Saved df_balance in ", save_to)
+  }
+
   return(df_balance)
 }
-
-#' prepare_debt
-#'
-#' @param df_cantons Data frame, storing canton data (name, abbreviation, etc.)
-#'
-#' @importFrom magrittr %>%
-#'
-#' @return Data frame
-prepare_debt <- function(df_cantons) {
-
-  ## Debt (FFA debt tables)
-  df_debt <- purrr::map2(
-    rep(c("agg", "pc"), 2), rep(c("cantonal", "municipal"), each = 2),
-    ~prepare_debt_indicator(
-      category_selected = .x, federal_level_selected = .y, df_cantons
-      )
-    ) %>%
-    dplyr::bind_rows() %>%
-    tidyr::pivot_wider(
-      names_from = c("federal_level", "category"), values_from = "chf"
-      ) %>%
-    dplyr::mutate(across(tidyselect::contains("agg"), ~ . / 1000000)) %>%   # From CHF to mio. CHF
-    dplyr::select(
-      canton, year,
-      can_debt_agg_mio = "cantonal_agg",
-      mun_debt_agg_mio = "municipal_agg",
-      can_debt_pc_chf = "cantonal_pc",
-      mun_debt_pc_chf = "municipal_pc"
-      )
-
-  message("Prepared df_debt")
-
-  return(df_debt)
-}
-
-
-
-
-#### Prepare full Dataset ####
-
-#' prepare_full_ffa_data
-#'
-#' @param df_cantons Data frame, storing canton data (name, abbreviation, etc.)
-#' @param save_to String, storing the path where the output should be saved
-#'
-#' @importFrom magrittr %>%
-#'
-#' @return Data frame of the fiscal data
-#' @export
-#'
-#' @examples
-#' \dontrun{df <- prepare_full_ffa_data(df_cantons)}
-prepare_full_ffa_data <- function(df_cantons, save_to = NULL)  {
-
-  message("Prepare FFA data")
-
-  df_rev_exp <- prepare_rev_exp(df_cantons)
-  message("------------------------------------------")
-  df_debt <- prepare_debt(df_cantons)
-  message("------------------------------------------")
-  df_balance <- prepare_balance(df_cantons)
-  message("------------------------------------------")
-
-  df_final <- df_rev_exp %>%
-    dplyr::left_join(df_balance, by = c("canton", "year")) %>%
-    dplyr::full_join(df_debt, by = c("canton", "year")) %>%
-    dplyr::arrange(canton, year) %>%
-    tidyr::pivot_longer(
-      -c(canton, year),
-      names_to = c("federal_level", "cat1", "cat2", "unit"), names_sep = "_"
-      ) %>%
-    dplyr::mutate(year = as.integer(year))
-
-  message("Prepared df_final")
-
-  if (!is.null(save_to)){
-    readr::write_rds(df_final, save_to)
-    message("Saved df_final in", save_to)
-  }
-  return(df_final)
-}
-
-
-
-
 
 
 

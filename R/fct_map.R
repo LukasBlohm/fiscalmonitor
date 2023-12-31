@@ -1,7 +1,7 @@
 #' Title
 #'
 #' @param df Data frame
-#' @param input List
+#' @param input List, storing user inputs
 #'
 #' @importFrom magrittr %>%
 #'

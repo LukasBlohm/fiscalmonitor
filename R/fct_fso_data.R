@@ -14,39 +14,41 @@
 #' \dontrun{ggplot(df_population, aes(year, pop_count, color = canton))+ geom_line()}
 get_fso_pop_data <- function(fso_url, file, df_cantons, save_to = NULL) {
 
+  message("Prepare FSO data")
+  message("Start download of ", file)
+
   population_px <- pxR::read.px(
     paste0(fso_url, "file=", file), encoding = "cp1252"
     ) %>%
     as.data.frame()
 
+  message("Download finished")
+
   df_population <- population_px %>%
-    dplyr::select(canton_name_fso = "Kanton",
-           year = "Jahr",
-           variable = "Demografische.Komponente",
-           nationality = "Staatsangehörigkeit..Kategorie.",
-           age = "Alter",
-           gender = "Geschlecht",
-           value) %>%
+    dplyr::select(
+      canton_name_fso = "Kanton",
+      year = "Jahr",
+      variable = "Demografische.Komponente",
+      nationality = "Staatsangehörigkeit..Kategorie.",
+      age = "Alter",
+      gender = "Geschlecht",
+      value
+      ) %>%
     dplyr::filter(variable == "Bestand am 1. Januar") %>%
     dplyr::filter(nationality == "Staatsangehörigkeit (Kategorie) - Total") %>%
     dplyr::filter(gender == "Geschlecht - Total") %>%
     dplyr::filter(age == "Alter - Total") %>%
-    # Convert factor
+    # Convert factor to int (recode to character first to avoid error)
     dplyr::mutate(year = as.integer(as.character(year))) %>%
-    dplyr::filter(year >= 1990) %>%
+    dplyr::filter(year >= 1990L) %>%
     # Join with cantons (and drop non-canton observations)
     dplyr::right_join(df_cantons, by = "canton_name_fso") %>%
     dplyr::select(canton, year, pop_count = "value") %>%
     dplyr::arrange(year, canton)
 
-  # if (save){
-  #   path <- paste0(PATHS$data_prepared, "fso_pop_data.csv")
-  #   readr::write_csv(df_population, path)
-  #   message("Saved ", path)
-  # }
   if (!is.null(save_to)){
     readr::write_rds(df_population, save_to)
-    message("Saved df_population in", save_to)
+    message("Saved df_population in ", save_to)
   }
   return(df_population)
 }

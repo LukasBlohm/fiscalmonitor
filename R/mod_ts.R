@@ -33,8 +33,8 @@ mod_ts_ui <- function(id){
                   selected = "total"),
       shiny::selectInput(ns("unit"),
                   "Unit",
-                  choices = c("mio", "CHF"),
-                  selected = "mio")
+                  choices = unique(.GlobalEnv$df_base$unit),
+                  selected = "pc_chf")
       ),
     bslib::card(
       full_screen = TRUE,
@@ -75,10 +75,12 @@ mod_ts_server <- function(id){
 
     output$plot <- plotly::renderPlotly({
 
+      shiny::req(input$cat2)
+      shiny::req(input$unit)
+      shiny::req(df_plot())
+
       create_plot(df_plot(), input) %>%
-        plotly::ggplotly(
-          tooltip = "text"
-        ) %>%
+        plotly::ggplotly(tooltip = "text") %>%
         plotly::config(modeBarButtonsToRemove = c(
           # "zoomIn2d", "zoomOut2d", ""resetScale2d"
           "zoom2d", "lasso2d", "pan2d", "box2d", "select2d", "autoScale2d",

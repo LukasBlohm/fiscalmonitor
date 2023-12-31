@@ -25,7 +25,10 @@ PATHS$data_prepared <- "data_prepared/"
 PATHS$fso_url <- fso_url <- "https://www.pxweb.bfs.admin.ch/DownloadFile.aspx?"
 PATHS$fso_pop_file <- "px-x-0102020000_104"
 
-PATHS$ffa_prepared <- paste0(PATHS$data_prepared, "ffa_data.rds")
+PATHS$fso_population <- paste0(PATHS$data_prepared, "fso_population.rds")
+PATHS$ffa_rev_exp <- paste0(PATHS$data_prepared, "ffa_rev_exp.rds")
+PATHS$ffa_balance <- paste0(PATHS$data_prepared, "ffa_balance.rds")
+PATHS$final_dataset <- paste0(PATHS$data_prepared, "final_dataset.rds")
 
 v_colors <- c(RColorBrewer::brewer.pal(n = 8, name = "Accent"))
 
@@ -43,12 +46,12 @@ df_cantons <- structure(
          "Thurgau", "Tessin", "Uri", "Waadt", "Wallis", "Zug", "Zürich"
          ),
        canton_name_fso = c(
-         "Aargau", "Appenzell Ausserrhoden", "Appenzell Innerrhoden",
-         "Basel-Landschaft", "Basel-Stadt", "Bern / Berne", "Fribourg / Freiburg",
+         "Aargau", "Appenzell Innerrhoden", "Appenzell Ausserrhoden",
+         "Bern / Berne", "Basel-Landschaft", "Basel-Stadt", "Fribourg / Freiburg",
          "Genève", "Glarus", "Graubünden / Grigioni / Grischun", "Jura", "Luzern",
-         "Neuchâtel", "Nidwalden", "Obwalden", "Schaffhausen",
-         "Schwyz", "Solothurn", "St. Gallen", "Thurgau", "Ticino",
-         "Uri", "Valais / Wallis", "Vaud", "Zug", "Zürich"
+         "Neuchâtel", "Nidwalden", "Obwalden", "St. Gallen", "Schaffhausen",
+         "Solothurn", "Schwyz", "Thurgau", "Ticino",
+         "Uri", "Vaud", "Valais / Wallis", "Zug", "Zürich"
          )
        ),
   class = "data.frame", row.names = c(NA, -26L))
