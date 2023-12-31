@@ -2,13 +2,10 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'
-#' @import shiny
-#' @import bslib
-#'
 #' @noRd
 app_ui <- function(request) {
 
-  tagList(
+  htmltools::tagList(
 
     # golem_add_external_resources(),
     bslib::page_navbar(
