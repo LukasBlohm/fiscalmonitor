@@ -35,6 +35,7 @@ unit_selector <- function(ns) {
   shiny::selectInput(ns("unit"),
                      "Unit",
                      choices = unique(.GlobalEnv$df_base$unit),
+                     # choices = c("PC" = "pc_chf", "AGG" = "agg_miochf"),
                      selected = "pc_chf")
 }
 
@@ -56,30 +57,9 @@ update_cat2 <- function(session, input) {
   shiny::updateSelectInput(
     session, inputId = "cat2",
     choices = .GlobalEnv$df_var_structure %>%
-      dplyr::filter(federal_level == input$level) %>%
+      # dplyr::filter(federal_level == input$level) %>%
       dplyr::filter(cat1 == input$cat1) %>%
       dplyr::filter(unit == shiny::isolate(input$unit)) %>%
       dplyr::pull(cat2)
     )
 }
-
-#' #' Title
-#' #'
-#' #' @param session
-#' #' @param input
-#' #'
-#' #' @importFrom magrittr %>%
-#' #'
-#' #' @noRd
-#' update_unit <- function(session, input) {
-#'   shiny::updateSelectInput(
-#'     session, inputId = "unit",
-#'     choices = df_var_structure %>%
-#'       dplyr::filter(federal_level == input$level) %>%
-#'       dplyr::filter(cat1 == input$cat1) %>%
-#'       dplyr::filter(cat2 == input$cat2) %>%
-#'       dplyr::pull(unit)
-#'   )
-#' }
-
-

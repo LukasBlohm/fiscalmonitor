@@ -41,8 +41,7 @@ mod_reg_server <- function(id){
     })
 
     df_filtered <- shiny::reactive(
-      filter_df(.GlobalEnv$df_base, input) %>%
-        dplyr::select(-canton_marked)
+      apply_common_filters(.GlobalEnv$df_base, input)
       )
 
     output$plot <- renderPlot({

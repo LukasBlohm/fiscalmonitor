@@ -14,10 +14,7 @@ filter_df <- function(df_base, input) {
   # print(head(df_base))
 
   df_plot <- df_base %>%
-    dplyr::filter(federal_level == input$level) %>%
-    dplyr::filter(cat1 == input$cat1) %>%
-    dplyr::filter(cat2 == input$cat2) %>%
-    dplyr::filter(unit == input$unit) %>%
+    apply_common_filters(input) %>%
     dplyr::mutate(
       canton_marked = factor(
         dplyr::case_when(

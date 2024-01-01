@@ -1,3 +1,20 @@
+#' Title
+#'
+#' @param df Data frame
+#' @param input List, storing user inputs
+#'
+#' @noRd
+apply_common_filters <- function(df, input) {
+  dplyr::filter(
+    df,
+    # federal_level == input$level
+    cat1 == input$cat1,
+    cat2 == input$cat2,
+    unit == input$unit
+  )
+}
+
+
 #' generate_vector_code
 #'
 #' Generate code to reproduce a vector in the environment. This can also

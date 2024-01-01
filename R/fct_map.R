@@ -7,16 +7,7 @@
 #'
 #' @noRd
 filter_df_map <- function(df, input) {
-
-  # print(paste0("df before filter"))
-  # print(head(df))
-
-  df_plot <- df %>%
+  df %>%
     dplyr::filter(year == input$year) %>%
-    dplyr::filter(federal_level == input$level) %>%
-    dplyr::filter(cat1 == input$cat1) %>%
-    dplyr::filter(cat2 == input$cat2) %>%
-    dplyr::filter(unit == input$unit)
-
-  return(df_plot)
+    apply_common_filters(input)
 }
