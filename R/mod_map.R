@@ -28,7 +28,7 @@ mod_map_ui <- function(id){
     ),
     bslib::card(
       full_screen = TRUE,
-      bslib::card_header("Map"),
+      bslib::card_header("Karte"),
       shiny::plotOutput(ns("plot_map"))
     )
   )

@@ -21,7 +21,8 @@ mod_reg_ui <- function(id){
       ),
     bslib::card(
       full_screen = TRUE,
-      bslib::card_header("Result of per canton regression of selected variable on year"),
+      bslib::card_header("Koeffizienten und Standardfehler pro Kanton\nder Regression der selektierten Variable auf das Jahr"),
+      #bslib::card_header("Result of per canton regression of selected variable on year"),
       shiny::plotOutput(ns("plot"))
       )
     )

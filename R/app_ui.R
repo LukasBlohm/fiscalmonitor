@@ -15,17 +15,17 @@ app_ui <- function(request) {
       title = "Fiscal Monitor",
 
       bslib::nav_panel(
-        title = "Time Series",
+        title = "Zeitreihe",
         mod_ts_ui(id = "timeseries")
       ),
 
       bslib::nav_panel(
-        title = "Map",
+        title = "Karte",
         mod_map_ui(id = "map")
       ),
 
       bslib::nav_panel(
-        title = "Regressions",
+        title = "Regressionen",
         mod_reg_ui(id = "reg")
       )
     )
@@ -51,7 +51,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "Fiscal Monitor"
+      app_title = "Kantonale Finanzen"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

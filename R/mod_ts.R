@@ -21,7 +21,7 @@ mod_ts_ui <- function(id){
       ),
     bslib::card(
       full_screen = TRUE,
-      bslib::card_header("Time Series"),
+      bslib::card_header("Zeitreihe"),
       plotly::plotlyOutput(ns("plot"))
       )
     )
@@ -35,19 +35,9 @@ mod_ts_server <- function(id){
   shiny::moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    shiny::observe({
+    shiny::observeEvent(input$cat1, {
       update_cat2(session, input)
       })
-
-    # shiny::observe({
-    #   update_unit(session, input)
-    #   # shiny::updateSelectInput(session, inputId = "unit",
-    #   #                   choices = df_var_structure %>%
-    #   #                     dplyr::filter(federal_level == input$level) %>%
-    #   #                     dplyr::filter(cat1 == input$cat1) %>%
-    #   #                     dplyr::filter(cat2 == input$cat2) %>%
-    #   #                     dplyr::pull(unit))
-    # })
 
     df_plot <- shiny::reactive(filter_df(.GlobalEnv$df_base, input))
 
