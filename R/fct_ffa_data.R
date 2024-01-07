@@ -25,7 +25,6 @@ prepare_rev_exp <- function(df_cantons, save_to = NULL) {
   df_rev_exp <- df_revenues %>%
     dplyr::bind_rows(df_expenditures) %>%
     dplyr::mutate(
-      year = as.numeric(year),
       value = tidyr::replace_na(as.numeric(value), 0) # concerns only interest expenditure in AI 2015-2020
       ) %>%
     dplyr::mutate(value = value / 1000) %>%                      # from 1000CHF to mio CHF
@@ -89,16 +88,16 @@ prepare_balance <- function(df_cantons, save_to = NULL) {
     tidyr::pivot_wider(values_from = "value", names_from = "item") %>%
     dplyr::mutate(
       dplyr::across(
-        c(1, 3:tidyselect::last_col()),
-        ~dplyr::if_else(is.na(as.numeric(.)), 0, as.numeric(.))
+        3:tidyselect::last_col(),
+        ~dplyr::if_else(is.na(as.numeric(.)), 0, as.numeric(.) / 1000)    # CHF 1000 -> CHF mio
       )
     ) %>%
     dplyr::mutate(
-      can_balance_debtnet_mio = (Fremdkapital - Finanzvermögen) / 1000,    #
+      can_balance_debtnet_mio = (Fremdkapital - Finanzvermögen),
       can_balance_debtgross_mio = (
         `Laufende Verbindlichkeiten` +
           `Kurzfristige Finanzverbindlichkeiten` +
-          `Langfristige Finanzverbindlichkeiten`) / 1000
+          `Langfristige Finanzverbindlichkeiten`)
     ) %>%
     dplyr::select(
       canton, year, can_balance_debtnet_mio, can_balance_debtgross_mio,

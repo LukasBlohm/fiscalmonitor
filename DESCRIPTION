@@ -1,6 +1,6 @@
 Package: fiscalmonitor
 Title: Monitor Fiscal Data
-Version: 0.4
+Version: 0.4.1
 Authors@R: 
     person(given = "Lukas",
            family = "Blohm",

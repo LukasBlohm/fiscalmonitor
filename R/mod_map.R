@@ -41,8 +41,8 @@ mod_map_server <- function(id){
   shiny::moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    shiny::observe({
-      update_cat2(session, input)
+    shiny::observeEvent(input$cat1, {
+      update_cat2_selector(session, input)
     })
 
     df_plot <- shiny::reactive(filter_df_map(.GlobalEnv$df_base, input))

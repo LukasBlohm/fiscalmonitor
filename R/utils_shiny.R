@@ -66,7 +66,7 @@ unit_selector <- function(ns) {
 #' @importFrom magrittr %>%
 #'
 #' @noRd
-update_cat2 <- function(session, input) {
+update_cat2_selector <- function(session, input) {
   shiny::updateSelectInput(
     session, inputId = "cat2",
     choices = .GlobalEnv$df_var_structure %>%
@@ -116,6 +116,8 @@ rename_cat2 <- function(x, cat1) {
         "assetsfinance" = "Finanzvermögen",
         "assetsadmin" = "Verwaltungsvermögen",
         "passive" = "Passiven",
+        "debtnet" = "Nettoschulden",
+        "debtgross" = "Bruttoschulden",
         "liabilities" = "Fremdkapital",
         "liabilitiesshort" = "Kurzfristige Finanzverbindlichkeiten",
         "liabilitieslong" = "Langfristige Finanzverbindlichkeiten",

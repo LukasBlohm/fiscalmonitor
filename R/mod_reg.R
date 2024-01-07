@@ -5,10 +5,8 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#'
-#' @importFrom shiny NS tagList
 mod_reg_ui <- function(id){
-  ns <- NS(id)
+  ns <- shiny::NS(id)
 
   bslib::page_sidebar(
 
@@ -37,8 +35,8 @@ mod_reg_server <- function(id){
     ns <- session$ns
 
 
-    shiny::observe({
-      update_cat2(session, input)
+    shiny::observeEvent(input$cat1, {
+      update_cat2_selector(session, input)
     })
 
     df_filtered <- shiny::reactive(

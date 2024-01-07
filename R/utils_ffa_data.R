@@ -72,12 +72,12 @@ prepare_canton <- function(canton_abb, category) {
     janitor::row_to_names(row_number = 1) %>%
     dplyr::rename(year = 1) %>%
     tidyr::gather("item", "value", -year) %>%
-    # separate(col = item, into = c("item_nr", "item"), sep = "_") %>%
     tidyr::separate_wider_delim(
       cols = item, names = c("item_nr", "item"), delim = "_"
       ) %>%
     dplyr::filter(item %in% target_variables) %>%
-    dplyr::mutate(canton = toupper(canton_abb)) %>%
+    dplyr::mutate(year = as.integer(year),
+                  canton = toupper(canton_abb)) %>%
     dplyr::select(-item_nr)
 
   message("Prepared ", category, " for ", toupper(canton_abb))

@@ -5,6 +5,8 @@
 .Rhistory
 .here
 
+data_map/
 data_prepared/
+data_final/
 dev/
 man/

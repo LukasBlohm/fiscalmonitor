@@ -1,6 +1,3 @@
-
-#### Prepare full Dataset ####
-
 #' prepare_full_data
 #'
 #' @param df_cantons Data frame, storing canton data (name, abbreviation, etc.)
@@ -21,7 +18,7 @@ prepare_full_data <- function(df_cantons, save_to = NULL)  {
     df_rev_exp <- readr::read_rds(.GlobalEnv$PATHS$ffa_rev_exp)
   } else {
     df_rev_exp <- prepare_rev_exp(
-      df_cantons, save_to = .GlobalEnv$PATHS$ffa_rev_exp
+      df_cantons, save_to = 2
       )
     message("------------------------------------------")
   }
@@ -60,8 +57,7 @@ prepare_full_data <- function(df_cantons, save_to = NULL)  {
     ) %>%
     dplyr::select(-unit) %>%
     dplyr::left_join(df_fso, by = dplyr::join_by(canton, year)) %>%
-    dplyr::mutate(year = as.integer(year),
-                  pc_chf = agg_miochf / pop_count * 1000000) %>%
+    dplyr::mutate(pc_chf = agg_miochf / pop_count * 1000000) %>%
     dplyr::select(-pop_count) %>%
     tidyr::pivot_longer(
       c(pc_chf, agg_miochf),
