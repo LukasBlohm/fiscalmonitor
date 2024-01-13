@@ -35,7 +35,7 @@ PATHS$ffa_balance <- paste0(PATHS$data_intermediate, "ffa_balance.rds")
 PATHS$data_final <- paste0("data_final/final_dataset.rds")
 
 
-v_colors <- c(RColorBrewer::brewer.pal(n = 8, name = "Accent"))
+v_colors <- c(RColorBrewer::brewer.pal(n = 8, name = "Dark2"))
 
 df_cantons <- structure(
   list(canton_nr = 1:26,
@@ -60,3 +60,53 @@ df_cantons <- structure(
          )
        ),
   class = "data.frame", row.names = c(NA, -26L))
+
+
+
+
+v_rev_name_mapping <- c(
+  "total" = "Gesamteinnahmen",
+  "fiscal" = "Fiskaleinnahmen",
+  "taxinc" = "Einkommenssteuern natürliche Personen",
+  "taxwealth" = "Vermögenssteuern natürliche Personen",
+  "taxprofit" = "Gewinnsteuern juristische Personen",
+  "taxcap" = "Kapitalsteuern juristische Personen",
+  "int" = "Zinseinnahmen",
+  "transfer" = "Transfereinnahmen",
+  "fla" = "Finanz- und Lastenausgleich",
+  "invest" = "Investitionsbeiträge"
+)
+
+v_exp_name_mapping <- c(
+  "total" = "Gesamtausgaben",
+  "admin" = "Allgemeine Verwaltung",
+  "security" = "Öffentliche Ordnung und Sicherheit, Verteidigung",
+  "education" = "Bildung",
+  "culture" = "Kultur, Sport und Freizeit, Kirche",
+  "health" = "Gesundheit",
+  "socsecurity" = "Soziale Sicherheit",
+  "traffic" = "Verkehr und Nachrichtenübermittlung",
+  "environment" = "Umweltschutz und Raumordnung",
+  "economy" = "Volkswirtschaft",
+  "finance" = "Finanzen und Steuern"
+)
+
+v_balance_name_mapping <- c(
+  "active" = "Aktiven",
+  "assetsfinance" = "Finanzvermögen",
+  "assetsadmin" = "Verwaltungsvermögen",
+  "passive" = "Passiven",
+  "debtnet" = "Nettoschulden",
+  "debtgross" = "Bruttoschulden",
+  "liabilities" = "Fremdkapital",
+  "liabilitiesshort" = "Kurzfristige Finanzverbindlichkeiten",
+  "liabilitieslong" = "Langfristige Finanzverbindlichkeiten",
+  "equity" = "Eigenkapital"
+)
+
+
+
+
+
+
+

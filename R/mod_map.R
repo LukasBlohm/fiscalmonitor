@@ -12,14 +12,7 @@ mod_map_ui <- function(id){
 
     sidebar = bslib::sidebar(
 
-      shiny::sliderInput(ns("year"),
-                  "Year",
-                  min = min(.GlobalEnv$df_base$year),
-                  max = max(.GlobalEnv$df_base$year),
-                  value = max(.GlobalEnv$df_base$year),
-                  step = 1,
-                  round = TRUE,
-                  sep = ""),
+      year_slider(ns, value = max(.GlobalEnv$df_base$year)),
 
       # level_selector(ns),
       cat1_selector(ns),
@@ -52,16 +45,23 @@ mod_map_server <- function(id){
 
       # print(head(df_plot()))
 
-      v_data <- df_plot()$value %>% purrr::set_names(df_plot()$canton)
+      v_data <- purrr::set_names(df_plot()$value, df_plot()$canton)
+
+      # print(paste("PRINT v_data"))
+      # print(v_data)
 
       min_indicator <- round(
-        min(v_data),  -(stringr::str_length(
-          stringr::str_extract(max(v_data), "[0-9]+")) + 1)
+        min(v_data),
+        -(stringr::str_length(stringr::str_extract(max(v_data), "[0-9]+")) + 1)
         )
       max_indicator <- round(
         max(v_data),
-        -(stringr::str_length(stringr::str_extract(min(v_data), "[0-9]+")) + 1)
+        -(stringr::str_length(stringr::str_extract(min(v_data), "[0-9]+")))
         )
+
+      # print(paste("PRINT INDICATORS"))
+      # print(min_indicator)
+      # print(max_indicator)
 
       v_colors <- grDevices::colorRampPalette(c("white", DescTools::hred))(100)
 

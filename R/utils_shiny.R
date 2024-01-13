@@ -1,6 +1,17 @@
 
 
-
+year_slider <- function(ns, ...) {
+  shiny::sliderInput(
+    ns("year"),
+    "Jahr",
+    min = min(.GlobalEnv$df_base$year),
+    max = max(.GlobalEnv$df_base$year),
+    value = ...,
+    step = 1,
+    round = TRUE,
+    sep = ""
+  )
+}
 
 canton_selector <- function(ns) {
   shiny::selectInput(
@@ -60,8 +71,8 @@ unit_selector <- function(ns) {
 
 #' Title
 #'
-#' @param session
-#' @param input
+#' @param session Internal shiny variable
+#' @param input List, storing user inputs
 #'
 #' @importFrom magrittr %>%
 #'
@@ -74,58 +85,10 @@ update_cat2_selector <- function(session, input) {
       dplyr::filter(cat1 == input$cat1) %>%
       dplyr::filter(unit == shiny::isolate(input$unit)) %>%
       dplyr::pull(cat2) %>%
-      rename_cat2(cat1 = input$cat1)
+      # Get labels to display
+      purrr::set_names(get(paste0("v_", input$cat1, "_name_mapping")))
     )
 }
-
-
-rename_cat2 <- function(x, cat1) {
-  if (cat1 == "rev") {
-    purrr::set_names(
-      x,
-      c("total" = "Gesamteinnahmen",
-      "fiscal" = "Fiskaleinnahmen",
-      "taxinc" = "Einkommenssteuern natürliche Personen",
-      "taxwealth" = "Vermögenssteuern natürliche Personen",
-      "taxprofit" = "Gewinnsteuern juristische Personen",
-      "taxcap" = "Kapitalsteuern juristische Personen",
-      "int" = "Zinseinnahmen",
-      "transfer" = "Transfereinnahmen",
-      "fla" = "Finanz- und Lastenausgleich",
-      "invest" = "Investitionsbeiträge")
-    )
-  } else if (cat1 == "exp") {
-    purrr::set_names(
-      x,
-      c("total" = "Gesamtausgaben",
-        "admin" = "Allgemeine Verwaltung",
-        "security" = "Öffentliche Ordnung und Sicherheit, Verteidigung",
-        "education" = "Bildung",
-        "culture" = "Kultur, Sport und Freizeit, Kirche",
-        "health" = "Gesundheit",
-        "socsecurity" = "Soziale Sicherheit",
-        "traffic" = "Verkehr und Nachrichtenübermittlung",
-        "environment" = "Umweltschutz und Raumordnung",
-        "economy" = "Volkswirtschaft",
-        "finance" = "Finanzen und Steuern")
-    )
-  } else if (cat1 == "balance") {
-    purrr::set_names(
-      x,
-      c("active" = "Aktiven",
-        "assetsfinance" = "Finanzvermögen",
-        "assetsadmin" = "Verwaltungsvermögen",
-        "passive" = "Passiven",
-        "debtnet" = "Nettoschulden",
-        "debtgross" = "Bruttoschulden",
-        "liabilities" = "Fremdkapital",
-        "liabilitiesshort" = "Kurzfristige Finanzverbindlichkeiten",
-        "liabilitieslong" = "Langfristige Finanzverbindlichkeiten",
-        "equity" = "Eigenkapital")
-    )
-  }
-}
-
 
 
 

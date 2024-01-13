@@ -15,11 +15,18 @@ mod_ts_ui <- function(id){
       # level_selector(ns),
       cat1_selector(ns),
       cat2_selector(ns),
-      unit_selector(ns)
+      unit_selector(ns),
+
+      shiny::checkboxInput(ns("norm"), "Daten Normalisieren", value = FALSE),
+      shiny::conditionalPanel(
+        condition = "input.norm",
+        ns = ns,
+        year_slider(ns, value = median(.GlobalEnv$df_base$year))
+        )
       ),
     bslib::card(
       full_screen = TRUE,
-      bslib::card_header("Zeitreihe"),
+      #bslib::card_header(),
       plotly::plotlyOutput(ns("plot"))
       )
     )
