@@ -1,0 +1,10 @@
+name: fiscalmonitor
+title: fiscalmonitor
+username: lblohm
+account: lblohm
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10878794
+bundleId: 8117225
+url: https://lblohm.shinyapps.io/fiscalmonitor/
+version: 1
