@@ -1,6 +1,6 @@
 Package: fiscalmonitor
 Title: Monitor Data of Cantonal Public Finances
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: 
     person(given = "Lukas",
            family = "Blohm",

@@ -13,18 +13,22 @@ options(bfsMaps.base = PATHS$data_map)
 message("Content of the map directory:\n",
         paste(dir(options()$bfsMaps.base, recursive = TRUE), collapse = "\n"))
 
-# Adjust Unicode normalization in internal package data maps.csv
-# (which stores filenames) from NFC to NFD (corresponding to the used files)
-# package_dir <- find.package("bfsMaps")
-# maps_csv_path <- file.path(package_dir, "extdata", "maps.csv")
-#
-# maps_csv_original <- read.csv(maps_csv_path, sep = ";")
-#
-# maps_csv_nfd <- maps_csv_original |>
-#   dplyr::mutate(dplyr::across(tidyselect::everything(), ~ stringi::stri_trans_nfd(.)))
-# readr::write_delim(maps_csv_nfd, file = maps_csv_path, delim = ";")
 
+# Conditionally adjust Unicode normalization in internal package data maps.csv
+# (which stores filenames) from NFC to NFD
+# when the code runs in a container (assumes NFC) on macOS (gives NFD)
+running_env <- Sys.getenv("RUNNING_ENV")
 
+if (running_env == "macOS_container") {
+  package_dir <- find.package("bfsMaps")
+  maps_csv_path <- file.path(package_dir, "extdata", "maps.csv")
+
+  maps_csv_original <- read.csv(maps_csv_path, sep = ";")
+
+  maps_csv_nfd <- maps_csv_original |>
+    dplyr::mutate(dplyr::across(tidyselect::everything(), ~ stringi::stri_trans_nfd(.)))
+  readr::write_delim(maps_csv_nfd, file = maps_csv_path, delim = ";")
+}
 
 
 
