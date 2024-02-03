@@ -65,12 +65,6 @@ mod_map_server <- function(id){
 
       v_colors <- grDevices::colorRampPalette(c("white", DescTools::hred))(100)
 
-      # bfsMaps::PlotKant(
-      #   map_x = bfsMaps::GetMap(name_x = "kant.map",
-      #                           basedir = "data_map/2023_GEOM_TK"),
-      #   id = names(v_data),
-      #   col = DescTools::FindColor(v_data, cols = v_colors),
-      #   main = NULL)
 
       bfsMaps::PlotKant(id = names(v_data),
                col = DescTools::FindColor(v_data, cols = v_colors),

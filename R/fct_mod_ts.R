@@ -68,6 +68,24 @@ create_plot <- function(df_plot, input) {
                ceiling(max(df_plot$value) / scale_factor) * scale_factor)
   }
 
+  if (!input$norm) {
+    df_plot <- df_plot %>%
+      dplyr::mutate(
+        value_text_1 = round(value, 1),
+        value_text_2 = paste0(s_unit, "CHF")
+      )
+  } else {
+    df_plot <- df_plot %>%
+      dplyr::mutate(
+        value_text_1 = ifelse(
+          year < input$year, -(round(value, 1) - 100), round(value, 1) - 100
+          ),
+        value_text_2 = paste(
+          "% Wachstum", ifelse(year < input$year, "bis", "seit"), input$year
+          )
+      )
+  }
+
 
   plot <- ggplot2::ggplot(df_plot) +
     # Points to carry hover text
@@ -77,11 +95,7 @@ create_plot <- function(df_plot, input) {
           year, value, group = canton,
           text = paste0(
             canton, " (", year, ")",
-            "<br>",
-            ifelse(!input$norm, round(value, 1), round(value, 1) - 100), " ",
-            ifelse(!input$norm,
-                   paste0(s_unit, "CHF"),
-                   paste("% Wachstum seit", input$year))
+            "<br>", value_text_1, " ", value_text_2
           )),
         alpha = 0 # hide points
       )
@@ -142,11 +156,7 @@ conditional_color_scale <- function(input, v_colors_plot) {
 
 conditional_yscale <- function(input, ...) {
   if (input$norm) {
-    ggplot2::scale_y_continuous(
-      limits = ...
-      # ,
-      # labels = scales::label_percent(scale = 1)
-      )
+    ggplot2::scale_y_continuous(limits = ...)
   } else {
     ggplot2::scale_y_continuous(
       labels = scales::label_number(scale = 1, suffix = "k")
