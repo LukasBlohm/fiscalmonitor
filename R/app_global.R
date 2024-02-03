@@ -1,20 +1,34 @@
 
-# library(tidyverse)
-# library(bfsMaps)
-# library(readxl)
-# library(janitor)
-
 PATHS <- list()
 
-# Ensure that the path does not end with a /
-# PATHS$data_map <- stringr::str_replace(
-#   Sys.getenv("PATH_MAP"), "2023_GEOM_TK/", "2023_GEOM_TK"
-#   )
+
+# Preparations for map data --------------------------------------------------------
 
 PATHS$data_map <- "data_map/2023_GEOM_TK"
 
-# Tell the bfsMaps where the maps are stored
+# Tell the bfsMaps package where the maps are stored
 options(bfsMaps.base = PATHS$data_map)
+
+# Verify that files are there
+message("Content of the map directory:\n",
+        paste(dir(options()$bfsMaps.base, recursive = TRUE), collapse = "\n"))
+
+# Adjust Unicode normalization in internal package data maps.csv
+# (which stores filenames) from NFC to NFD (corresponding to the used files)
+package_dir <- find.package("bfsMaps")
+maps_csv_path <- file.path(package_dir, "extdata", "maps.csv")
+
+maps_csv_original <- read.csv(maps_csv_path, sep = ";")
+
+maps_csv_nfd <- maps_csv_original |>
+  dplyr::mutate(dplyr::across(tidyselect::everything(), ~ stringi::stri_trans_nfd(.)))
+readr::write_delim(maps_csv_nfd, file = maps_csv_path, delim = ";")
+
+
+
+
+
+# Further paths ------------------------------------------------------------------
 
 PATHS$data_raw <- Sys.getenv("PATH_FFA")
 # Ensure that the path ends with a /
@@ -34,6 +48,8 @@ PATHS$ffa_balance <- paste0(PATHS$data_intermediate, "ffa_balance.rds")
 
 PATHS$data_final <- paste0("data_final/final_dataset.rds")
 
+
+# Mappings of variables -----------------------------------------------
 
 v_colors <- c(RColorBrewer::brewer.pal(n = 8, name = "Dark2"))
 
@@ -60,7 +76,6 @@ df_cantons <- structure(
          )
        ),
   class = "data.frame", row.names = c(NA, -26L))
-
 
 
 

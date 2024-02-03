@@ -1,0 +1,19 @@
+name: Deploy App
+
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: Deploy to Heroku
+      run: |
+        heroku container:login
+        heroku container:push web --app fiscalmonitor
+        heroku container:release web --app fiscalmonitor
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

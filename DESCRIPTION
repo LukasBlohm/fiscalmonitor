@@ -1,15 +1,16 @@
 Package: fiscalmonitor
-Title: Monitor Fiscal Data
-Version: 0.4.1
+Title: Monitor Data of Cantonal Public Finances
+Version: 1.0.0
 Authors@R: 
     person(given = "Lukas",
            family = "Blohm",
            role = c("aut", "cre"),
            email = "l.blohm98@gmail.com")
-Description: Shiny dashboard to visualise fiscal data. 
+Description: Shiny dashboard to visualise cantonal public finance data. 
 License: MIT + file LICENSE
 Imports: 
     bfsMaps (>= 1.99.3),
+    broom (>= 1.0.5),
     bslib (>= 0.6.1),
     config (>= 0.3.1),
     dplyr (>= 1.1.0), 
@@ -19,16 +20,20 @@ Imports:
     janitor (>= 2.1.0),
     lubridate (>= 1.9.2),
     magrittr (>= 2.0.3),
+    modelsummary (>= 1.4.3),
+    pkgload (>= 1.3.4),
     plotly (>= 4.10.3),
     purrr (>= 1.0.1),
     pxR (>= 0.42.7),
     RColorBrewer (>= 1.1.3),
+    readr (>= 2.1.5),
     readxl (>= 1.4.1),
     rlang (>= 1.1.1), 
+    roxygen2 (>= 7.3.1), 
     shiny (>= 1.7.4),
     stringr (>= 1.5.0),
     tibble (>= 3.1.8),
     tidyr (>= 1.3.0)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

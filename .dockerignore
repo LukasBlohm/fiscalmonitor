@@ -1,0 +1,10 @@
+# Exclude
+
+# Exclude directories
+data_prepared/
+man/
+dev/
+inst/
+
+# Exclude other files
+*.md
