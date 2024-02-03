@@ -15,14 +15,14 @@ message("Content of the map directory:\n",
 
 # Adjust Unicode normalization in internal package data maps.csv
 # (which stores filenames) from NFC to NFD (corresponding to the used files)
-package_dir <- find.package("bfsMaps")
-maps_csv_path <- file.path(package_dir, "extdata", "maps.csv")
-
-maps_csv_original <- read.csv(maps_csv_path, sep = ";")
-
-maps_csv_nfd <- maps_csv_original |>
-  dplyr::mutate(dplyr::across(tidyselect::everything(), ~ stringi::stri_trans_nfd(.)))
-readr::write_delim(maps_csv_nfd, file = maps_csv_path, delim = ";")
+# package_dir <- find.package("bfsMaps")
+# maps_csv_path <- file.path(package_dir, "extdata", "maps.csv")
+#
+# maps_csv_original <- read.csv(maps_csv_path, sep = ";")
+#
+# maps_csv_nfd <- maps_csv_original |>
+#   dplyr::mutate(dplyr::across(tidyselect::everything(), ~ stringi::stri_trans_nfd(.)))
+# readr::write_delim(maps_csv_nfd, file = maps_csv_path, delim = ";")
 
 
 
