@@ -41,14 +41,14 @@ PATHS$data_raw <- ifelse(
   PATHS$data_raw, paste0(PATHS$data_raw, "/")
   )
 
-PATHS$data_intermediate <- "data_intermediate/"
+PATHS$data_prepared <- "data_prepared/"
 
 PATHS$fso_url <- fso_url <- "https://www.pxweb.bfs.admin.ch/DownloadFile.aspx?"
 PATHS$fso_pop_file <- "px-x-0102020000_104"
 
-PATHS$fso_population <- paste0(PATHS$data_intermediate, "fso_population.rds")
-PATHS$ffa_rev_exp <- paste0(PATHS$data_intermediate, "ffa_rev_exp.rds")
-PATHS$ffa_balance <- paste0(PATHS$data_intermediate, "ffa_balance.rds")
+PATHS$fso_population <- paste0(PATHS$data_prepared, "fso_population.rds")
+PATHS$ffa_rev_exp <- paste0(PATHS$data_prepared, "ffa_rev_exp.rds")
+PATHS$ffa_balance <- paste0(PATHS$data_prepared, "ffa_balance.rds")
 
 PATHS$data_final <- paste0("data_final/final_dataset.rds")
 
