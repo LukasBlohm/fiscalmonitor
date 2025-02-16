@@ -5,6 +5,7 @@
 .Rhistory
 .here
 
+*.xlsx
 data_prepared/
 dev/
 man/

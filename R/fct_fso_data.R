@@ -14,15 +14,15 @@
 #' \dontrun{ggplot(df_population, aes(year, pop_count, color = canton))+ geom_line()}
 get_fso_pop_data <- function(fso_url, file, df_cantons, save_to = NULL) {
 
-  message("Prepare FSO data")
-  message("Start download of ", file)
+  cli::cli_alert_info("Prepare FSO data")
+  cli::cli_process_start("Download of ", file)
 
   population_px <- pxR::read.px(
     paste0(fso_url, "file=", file), encoding = "cp1252"
     ) %>%
     as.data.frame()
 
-  message("Download finished")
+  cli::cli_process_done()
 
   df_population <- population_px %>%
     dplyr::select(
@@ -48,7 +48,7 @@ get_fso_pop_data <- function(fso_url, file, df_cantons, save_to = NULL) {
 
   if (!is.null(save_to)){
     readr::write_rds(df_population, save_to)
-    message("Saved df_population in ", save_to)
+    cli::cli_alert_info("Saved {.code df_population} in ", save_to)
   }
   return(df_population)
 }

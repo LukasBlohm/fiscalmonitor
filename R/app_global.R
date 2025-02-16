@@ -34,7 +34,8 @@ if (running_env == "macOS_container") {
 
 # Further paths ------------------------------------------------------------------
 
-PATHS$data_raw <- Sys.getenv("PATH_FFA")
+# PATHS$data_raw <- Sys.getenv("PATH_FFA")
+PATHS$data_raw <- "data_raw"
 # Ensure that the path ends with a /
 PATHS$data_raw <- ifelse(
   stringr::str_ends(PATHS$data_raw, stringr::fixed("/")),

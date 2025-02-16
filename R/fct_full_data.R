@@ -12,19 +12,20 @@
 #' \dontrun{df <- prepare_full_ffa_data(df_cantons)}
 prepare_full_data <- function(df_cantons, save_to = NULL)  {
 
-  message("Prepare FFA data")
-
   if (file.exists(.GlobalEnv$PATHS$ffa_rev_exp)) {
     df_rev_exp <- readr::read_rds(.GlobalEnv$PATHS$ffa_rev_exp)
   } else {
+    cli::cli_process_start("Prepare FFA data")
     df_rev_exp <- prepare_rev_exp(
-      df_cantons, save_to = 2
+      df_cantons, save_to = file.path(.GlobalEnv$PATHS$data_prepared, "ffa_rev_exp.rds")
       )
-    message("------------------------------------------")
+    cli::cli_process_done()
+    cli::cli_rule()
   }
 
+
   # df_debt <- prepare_debt(df_cantons)
-  # message("------------------------------------------")
+  # cli::cli_rule()
 
   if (file.exists(.GlobalEnv$PATHS$ffa_balance)) {
     df_balance <- readr::read_rds(.GlobalEnv$PATHS$ffa_balance)
@@ -32,7 +33,7 @@ prepare_full_data <- function(df_cantons, save_to = NULL)  {
     df_balance <- prepare_balance(
       df_cantons, save_to = .GlobalEnv$PATHS$ffa_balance
       )
-    message("------------------------------------------")
+    cli::cli_rule()
   }
 
 

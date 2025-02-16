@@ -21,6 +21,17 @@ run_app <- function(
   if (file.exists(.GlobalEnv$PATHS$data_final)) {
     .GlobalEnv$df_base <- readr::read_rds(.GlobalEnv$PATHS$data_final)
   } else {
+
+    files_exist <- file.path(
+      .GlobalEnv$PATHS$data_raw, paste0(df_cantons$canton, "_raw.xlsx")
+      ) %>%
+      file.exists() %>%
+      all()
+
+    if (!files_exist) {
+      download_data(tolower(df_cantons$canton))
+    }
+
     .GlobalEnv$df_base <- prepare_full_data(
       df_cantons, save_to = .GlobalEnv$PATHS$data_final
       )
